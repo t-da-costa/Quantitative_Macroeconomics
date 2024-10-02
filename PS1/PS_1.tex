@@ -1,0 +1,298 @@
+\documentclass[a4paper,12pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage{amsmath, amssymb}
+\usepackage{graphicx}
+\usepackage{fourier}
+\usepackage{hyperref}
+\usepackage{titlesec}
+\usepackage{colonequals}
+\usepackage{tikz}
+\usepackage{xcolor}
+\usepackage{mdframed}
+\usepackage{cmap}
+\usepackage{physics}
+
+\title{PS 1}
+\author{DA COSTA, Thomas}
+\date{ }
+
+\begin{document}
+
+\maketitle
+
+\section{Problem}
+
+\begin{align}
+    \max_{{\{c_t, k_{t+1}, i_t\}}_{t = 1}^T} w(c_t) &= 
+    \max_{{\{c_t, k_{t+1}, i_t\}}_{t = 1}^T} E_0 \sum_{t = 0}^T \beta^t u(c_t) \\ 
+    &\text{ s.t. } \\
+    & c_t + i_t\leq A_t k_t^\alpha \label{constraint}\\
+    & k_{t+1} = (1 - \delta) k_t + i_t \label{conservation}\\
+    & k_0 \text{ given} \\
+    & \text{for } u(c_t) = \frac{c_t^{1 - \sigma} - 1}{1 - \sigma}
+\end{align}
+
+\section{Question 1} \label{Q1}
+$u$ is continuously differentiable, strictly
+increasing, strictly concave, bounded, and satisfies the Inada 
+conditions. \\
+
+The feasibility constraint can be written by combining \ref{constraint} and 
+\ref{conservation}, giving:
+
+\begin{equation}
+    \Rightarrow c_t = A_t k_t^\alpha + (1 - \delta) k_t - k_{t+1} \label{eq:feasibility}
+\end{equation}
+
+
+% Let us write the Lagrangian of the problem:
+
+% \begin{align} 
+%     \mathcal{L} & = w(c_t(A_t, k_t, k_{t+1})) - \lambda_t c_t(A_t, k_t, k_{t+1}) \label{eq:lagrangian} \\
+%     & = \sum_{t = 0}^T E_0 \beta^t u(c_t(A_t, k_t, k_{t+1})) - \lambda_t [A_t k_t^\alpha + (1 - \delta) k_t - k_{t+1}] \\
+%     & = \sum_{t = 0}^T E_0 \beta^t  \frac{[A_t k_t^\alpha + (1 - \delta) k_t - k_{t+1}]^{1 - \sigma} - 1}{1 - \sigma}
+%     - \lambda_t [A_t k_t^\alpha + (1 - \delta) k_t - k_{t+1}] 
+% \end{align}
+
+
+The First Order Condition (the Euler equation for capital) comes 
+from the derivative of $w(c_t)$ with respect to $k_{t+1}$:
+
+% \begin{align}
+%     \pdv{\mathcal{L}}{c_{t}}& = 0 \\
+%     \Rightarrow \pdv{w(c_t)}{c_t} & = \lambda_t \\
+%     \Rightarrow E_0 \beta^t \pdv{u(c_t)}{c_t} & = \lambda_t \label{FOC1}
+% \end{align}
+
+\begin{align}
+    %& \pdv{\mathcal{L}}{k_{t+1}} = 0 \\
+    & \pdv{{w(c_t(A_t, k_t, k_{t+1}))}}{k_{t+1}} = 0 \\
+    \Rightarrow & E_0 (\beta^t \pdv{u(c_t(A_t, k_t, k_{t+1}))}{k_{t+1}} 
+    + \beta^{t+1} \pdv{u(c_{t+1}(A_{t+1}, k_{t+1}, k_{t+2}))}{k_{t+1}}) = 0\\
+    %+ \lambda_t - \lambda_{t+1}[A_{t+1} \alpha k_{t+1}^{\alpha - 1} & + (1 - \delta)] = 0 \\
+    % \Rightarrow  E_0 \beta^t (\pdv{u(c_t)}{k_{t+1}} + 
+    % \beta \pdv{u(c_{t+1})}{k_{t+1}}) & = 
+    %\lambda_{t+1}[A_{t+1} \alpha k_{t+1}^{\alpha - 1} + (1 - \delta)]
+    %- \lambda_t \label{FOC2}
+    \Rightarrow & E_0 \beta^t (\pdv{u(c_t)}{c_t} \pdv{c_t}{k_{t+1}} + 
+    \beta \pdv{u(c_{t+1})}{c_{t+1}}\pdv{c_{t+1}}{k_{t+1}}) = 0 
+\end{align}
+
+Based on the equation \eqref{eq:feasibility}, we have 
+$\pdv{c_t}{k_{t+1}} = -1$ and $\pdv{c_{t+1}}{k_{t+1}} = 
+A_{t+1} \alpha k_{t+1}^{\alpha - 1} + (1 - \delta)$. Thus: 
+\begin{align} \label{FOC_final}
+    \pdv{u(c_t)}{c_t} = 
+    \beta \pdv{u(c_{t+1})}{c_{t+1}} [A_{t+1} \alpha k_{t+1}^{\alpha - 1} + (1 - \delta)] 
+\end{align}
+
+
+% By putting \ref{FOC1} into \ref{FOC2}, we get:
+
+% \begin{align*}
+%     & E_0 \beta^t (\pdv{u(c_t)}{k_{t+1}} + 
+%     \beta \pdv{u(c_{t+1})}{k_{t+1}}) = 
+%     (E_0 \beta^{t+1} \pdv{u(c_{t+1})}{c_{t+1}})[A_{t+1} \alpha k_{t+1}^{\alpha - 1} + (1 - \delta)]
+%     - E_0 \beta^t \pdv{u(c_t)}{c_t} \\
+%     & \Rightarrow \pdv{u(c_t)}{k_{t+1}} + 
+%     \beta \pdv{u(c_{t+1})}{k_{t+1}} + \pdv{u(c_t)}{c_t} = 
+%     \beta \pdv{u(c_{t+1})}{c_{t+1}}[A_{t+1} \alpha k_{t+1}^{\alpha - 1} + (1 - \delta)] \\
+%     & \Rightarrow \pdv{u(c_t)}{c_{t}} \pdv{c_{t}}{k_{t+1}} + 
+%     \beta \pdv{u(c_{t+1})}{c_{t+1}} \pdv{c_{t+1}}{k_{t+1}} + \pdv{u(c_t)}{c_t} = 
+%     \beta \pdv{u(c_{t+1})}{c_{t+1}}[A_{t+1} \alpha k_{t+1}^{\alpha - 1} + (1 - \delta)] \\
+% \end{align*}
+
+% Note that $\pdv{c_{t+1}}{k_{t+1}} = A_{t+1} \alpha k_{t+1}^{\alpha - 1} + (1 - \delta)$. 
+% Thus, the right-hand side of the equation cancel out with the left-hand side middle term of 
+% the equation above, and we get:
+
+% \begin{align}
+%     \pdv{u(c_t)}{c_{t}} * (-1) + \pdv{u(c_t)}{c_t} = 0 \label{FOC_final}
+% \end{align}
+
+
+The transversality condition is:
+\begin{align}
+    \lim_{T \to \infty} & \pdv{w(c_t)}{c_t} k_{T+1} = 0
+\end{align}
+
+\section{Question 2}
+The steady-state levels are reached at $t = t^*$ such that 
+$c_{t^* + 1} = c_{t^*} = c^*$ and $k_{t^* + 1} = k_{t^*} = k^*$.
+If $\forall t, A_t = 1 $, the steady-state thus impose from \eqref{conservation}: 
+\begin{align}
+    k^* & = \frac{i_t}{\delta} \\
+    k^* & = \frac{(k^*)^\alpha - c^*}{\delta} \\
+    \delta k^* & = (k^*)^\alpha - c^* \\
+    \Rightarrow c^* & = (k^*)^\alpha - \delta k^* 
+\end{align}
+
+The equation \eqref{FOC_final} gives the expression of $k^*$, knowing that in the steady-state,
+$u(c_{t^*}) = u(c_{t^* + 1})$:
+\begin{align}
+    1 & = \beta  [\alpha (k^*)^{\alpha - 1} + (1 - \delta)] \\
+    \Rightarrow k^* & = (\frac{\beta^{-1} + \delta - 1}{\alpha})^{\frac{1}{\alpha - 1}}
+\end{align}
+
+\section{Question 3}
+
+An analytical solution is a policy function $c_t = g(k_t, \Theta)$ and 
+a law of motion $k_{t+1} = h(k_t, \Theta)$, with $\Theta$ the parameters of the model.
+Let us choose $\sigma = 1 \rightarrow u(c_t) = \log(c_t)$ and $\delta = 1$.
+We can write the Euler equation as:
+\begin{align}
+    {c^{-1}_t} = 
+    \beta {c^{-1}_{t+1}} [A_{t+1} \alpha k_{t+1}^{\alpha - 1}] \label{new_EE}
+\end{align}
+
+And the feasibility constraint as:
+\begin{align}
+    c_t = A_t k_t^\alpha - k_{t+1} \label{new_feasibility}
+\end{align}
+
+Combining \eqref{new_EE} and \eqref{new_feasibility}, we get:
+\begin{align}
+    {c_{t+1}} = 
+     {c_{t}} (\alpha \beta ) A_{t+1} k_{t+1}^{\alpha - 1} \\
+    A_{t+1} k_{t+1}^\alpha - k_{t+2} = [A_{t} k_{t}^{\alpha} - k_{t+1}] 
+    (\alpha \beta)  A_{t+1} k_{t+1}^{\alpha - 1} 
+\end{align}
+
+If we still assume that $\forall t, A_t = 1$, we get:
+\begin{align}
+    k_{t+1}^\alpha - k_{t+2} = [k_{t}^{\alpha} - k_{t+1}] 
+    (\alpha \beta) k_{t+1}^{\alpha - 1} \\
+    k_{t+1}^\alpha - k_{t+2} = [k_{t}^{\alpha}k_{t+1}^{\alpha - 1} 
+    - k_{t+1}^{\alpha}] 
+    (\alpha \beta)
+\end{align}
+
+We set $\alpha \beta = \theta$. 
+\begin{align}
+    k_{t+1}^\alpha - k_{t+2} & = \theta k_{t}^{\alpha}k_{t+1}^{\alpha - 1} 
+    - \theta k_{t+1}^{\alpha} \\
+    \Rightarrow (1 + \theta) k_{t+1}^\alpha - k_{t+2} & = 
+    \theta k_{t}^{\alpha}k_{t+1}^{\alpha - 1} \\
+    \Rightarrow (1 + \theta) - \frac{k_{t+2}}{k_{t+1}^\alpha} & = 
+    \theta k_{t}^{\alpha}k_{t+1}^{- 1} \\
+    \Rightarrow (1 + \theta) - \frac{k_{t+2}}{k_{t+1}^\alpha} & = 
+    \theta (\frac{k_{t+1}}{k_{t}^{\alpha}})^{-1}
+\end{align}
+
+We set $z_t = \frac{k_{t+1}}{k_{t}^{\alpha}}$, and we get:
+\begin{align}
+(1 + \theta) - z_{t+1} = 
+\theta z_t^{-1} \\ 
+\Rightarrow z_{t+1} = 1 + \theta - \theta z_t^{-1}
+\end{align}
+
+An unstable difference equation for $z_t$ must remain at its 
+rest-point, $\forall t, z_{t+1} = z_t = z^*$. It leads to: 
+
+\begin{align}
+    z^* = 1 + \theta - \theta (z^*)^{-1} \\
+    \Rightarrow (z^*)^2 - (1 + \theta) z^* + \theta = 0 \label{polynomial}
+\end{align}
+
+\begin{align}
+    \Delta & = (1 + \theta)^2 - 4\theta \\
+    & = 1 + 2\theta + \theta^2 - 4\theta \\
+    & = 1 - 2\theta + \theta^2 \\
+    \Rightarrow \Delta & = (1 - \theta)^2 \geq 0
+\end{align}
+
+The roots of the polynomial \eqref{polynomial} thus are:
+\begin{equation}
+    z^* = \frac{(1 + \theta) \pm (1 - \theta)}{2} \\
+    \begin{cases}
+        z^*_+ = 1 \\
+        z^*_- = \theta
+    \end{cases}
+\end{equation}
+
+A strictly positive consumption is only possible if $k^\alpha_t > k_{t+1}$ (based on \eqref{new_feasibility}), 
+which is equivalent to $z_t < 1$. Thus, the only stable solution is $z^*_- = \theta = \alpha \beta$.
+We eventually get the law of motion for capital:
+\begin{equation}
+    k_{t+1} = \alpha \beta k_t^\alpha
+\end{equation}
+
+And the policy function for consumption (from \eqref{new_feasibility}):
+\begin{equation}
+    c_t = k_t^\alpha - \alpha \beta k_t^\alpha = (1 - \alpha \beta) k_t^\alpha
+\end{equation}
+
+\section{Question 4}
+
+We set $\beta = 0.99$, $\alpha = 0.36$, $\delta = 0.025$. $\sigma = 1$
+implies that $u(c_t) = \ln(c_t)$. 
+The social planner programme is to maximize the utility function for 
+$T \in \{50, 100, 200\}$. 
+\begin{align*}
+    \max_{\{k_t, c_t\}^T_{t=0}} \sum_{t = 0}^T \beta^t \ln(c_t) \\
+    k_{t+1} = (1 - \delta) k_t + i_t \\
+    k_0 = 0.9 k^* \\
+    c_t + i_t \leq A_t k_t^\alpha
+\end{align*}
+
+The feasibility contraint is: 
+\begin{equation} \label{other_constraint}
+    c_t = A_t k_t^\alpha + (1 - \delta) k_t - k_{t+1}
+\end{equation}
+
+The optimality condition in finite time is: 
+\begin{equation}
+    k_{T+1} = 0
+\end{equation}
+
+Because the problem is similar to \ref{Q1}, we can use the same
+Euler equation \eqref{FOC_final} to solve the problem.
+
+\begin{align} 
+    c_{t+1} = c_t
+    \beta [A_{t+1} \alpha k_{t+1}^{\alpha - 1} + (1 - \delta)] \label{Euler4}
+\end{align}
+
+With the law of motion for capital:
+\begin{equation}
+    k_{t+1} = (1 - \delta) k_t + A_t k_t^\alpha - c_t
+\end{equation}
+With the initial condition $k_0 = 0.9 k^*$, we can solve the problem by finding 
+the right $c_0$ that will lead to $k_{T+1} = 0$.
+
+
+% We can find an expression for $k_t$ combining \eqref{other_constraint} 
+% and \eqref{Euler4}, and setting $A_t = 1, \forall t$:
+% \begin{align*}
+%     [k_{t+1}^\alpha + (1 - \delta) k_{t+1} - k_{t+2}] & = 
+%     \beta 
+%     [k_t^\alpha + (1 - \delta) k_t - k_{t+1}]
+%     [\alpha k_{t+1}^{\alpha - 1} + (1 - \delta)] \\
+%     \Rightarrow & = %k_{t+1}^\alpha + (1 - \delta) k_{t+1} - k_{t+2} =
+%     \beta
+%     [k_t^\alpha \alpha k_{t+1}^{\alpha - 1} + (1 - \delta) k_t 
+%     \alpha k_{t+1}^{\alpha - 1} - \alpha k_{t+1}^{\alpha} \\
+%     + k_t^\alpha (1 - \delta) + (1 - \delta)^2 k_t - k_{t+1}(1 - \delta)]
+% \end{align*}
+
+% Let us write again $\theta = \alpha \beta$, and 
+% introduce $\Gamma = (1 - \delta)$ for the sake of simplification.
+
+% \begin{align}
+%     k_{t+1}^\alpha + \Gamma k_{t+1} - k_{t+2} =
+%     \theta k_t^\alpha k_{t+1}^{\alpha - 1} + \Gamma \theta k_t 
+%     k_{t+1}^{\alpha - 1} - \theta k_{t+1}^{\alpha} 
+%     + \beta \Gamma k_t^\alpha + \Gamma^2 k_t - \Gamma k_{t+1} \\
+% \Rightarrow (1 + \theta) k_{t+1}^\alpha + 2\Gamma k_{t+1} - k_{t+2} =
+% \theta k_t^\alpha k_{t+1}^{\alpha - 1} + \Gamma \theta k_t 
+%     k_{t+1}^{\alpha - 1} + \beta \Gamma k_t^\alpha + \Gamma^2 k_t \\
+%     \Rightarrow k_{t+2} = (1 + \theta) k_{t+1}^\alpha + 2\Gamma k_{t+1} - 
+%     \theta k_{t+1}^{\alpha - 1} (k_t^\alpha  + \Gamma k_t) 
+%     - \beta \Gamma k_t^\alpha - \Gamma^2 k_t
+% \end{align}
+
+
+\end{document}
