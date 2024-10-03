@@ -1,3 +1,5 @@
+clear
+
 % Define parameters
 
 par.alpha = 0.36; % capital share
@@ -58,7 +60,7 @@ out == false
 function [C, K] = shooting(k_0, kstar, cstar, par, T, maxiter, question)
     
     c_l = 0 ;
-    c_u = 10 ;
+    c_u = cstar * 1.5 ;
 
     error = 1;
     i = 1;
@@ -105,7 +107,7 @@ end
 % Loop over all values of T
 for i = 1:length(T)
     % Run the shooting algorithm
-    [C, K] = shooting(k_0, kstar, cstar, par, T(i), 2000, 4);
+    [C, K] = shooting(k_0, kstar, cstar, par, T(i), 5000, 4);
     
     % Plot the sequences C(t) and K(t)
     figure;
@@ -148,4 +150,30 @@ xlabel('Time');
 ylabel('Capital');
 
 saveas(gcf, 'qu5_figure_T_200.png');
+
+% time=(1:T_5+1);
+
+% grid_2=tiledlayout(1,2);
+% nexttile
+% plot(time, C, 'r')
+% xlabel("Time")
+% ylabel("")
+% ylim([C(1) 2.78])
+% xlim([0 T_5+1])
+% title("Consumption")
+
+% nexttile
+% plot(time, K)
+% xlabel("Time")
+% ylabel("")
+% ylim([K(1) 38.5])
+% xlim([0 T_5+1])
+% title("Capital stock")
+
+% %% Plotting : Saddle path
+% figure;
+% title(['Saddle Path for T = ', num2str(T_5)]);
+% scatter(K, C) %use scatter to show that there are many points around the steady state
+% xlabel("K")
+% ylabel("C")
 
